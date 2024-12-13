@@ -8,8 +8,8 @@ venv/
 logs/
 *.log
 
-data/input/
-
+data/processed/
+data/output/
 
 .idea/
 .vscode/
