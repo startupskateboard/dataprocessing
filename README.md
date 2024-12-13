@@ -1,15 +1,9 @@
-# Excel Data Pipeline
+# [Redacted]
 
-A robust data ingestion pipeline that processes Excel files for SQL database ingestion.
-
+[Redacted]
 ## Features
 
-- Dynamic schema inference
-- Data type validation and normalization
-- Complex date format handling
-- Nested header support
-- SQL-ready output
-- Comprehensive logging
+[Redacted]
 
 ## Installation
 
