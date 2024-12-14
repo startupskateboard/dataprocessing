@@ -27,3 +27,5 @@ htmlcov/
 .cache
 coverage.xml
 *.cover
+
+get-pip.py
