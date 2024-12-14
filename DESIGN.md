@@ -1,43 +1,68 @@
-# Excel Data Pipeline: A Simple Overview
+# Excel Data Pipeline - System Design Document
 
-## What Does This System Do?
-This system takes Excel files and transforms them into clean, organized data that's ready for database use. 
+## Overview
 
-## Architecture Flow
-1. Upload -> Files arrive in monitored directory
-2. Raw Storage -> Original files archived with timestamps
-3. Ingestion -> File Handler processes one file at a time
-4. Validation -> Data Processor performs checks and transformations
-5. Output -> Clean data exported to database-ready format
+This pipeline is designed to convert Excel files with varying structures into SQL-ready data. The implementation focuses on handling real-world Excel files.
 
-## Data Processing Details
-### Parsing & Validation
-- Column type inference using sampling
-- Schema validation against expected formats
-- Multi-level header parsing and normalization
-- Null value detection and handling
+## Core Components and Implementation
 
-### Type Inference & Date Handling
-- Automatic type detection for columns
-- Date format normalization using DateUtil
-- Consistent datetime output format
-- Handling of multiple input date formats
+The system is divided into four Python modules, each handling a specific aspect of the pipeline:
 
-## Scalability & Processing
-- Stateless processing enables horizontal scaling
-- File-level parallel processing capability
-- Memory-efficient streaming for large files
-- Independent worker processes per file
+### Pipeline (pipeline.py)
+The main entry point that:
+- Creates and manages the directory structure (input, processed, output)
+- Sets up logging with timestamps for traceability
+- Iterates through Excel files and coordinates their processing
+- Implements basic error handling to ensure one file's failure doesn't stop the entire pipeline
 
-## Error Management & Logging
-### Error Handling
-- File issues (can't open, wrong format)
-- Structure problems (bad headers, wrong layout)
-- Data problems (invalid values, wrong formats)
-- System issues (out of memory, technical errors)
+### Excel Processor (excel_processor.py)
+Handles the core Excel processing logic:
+- Persists input files to a processed directory for safety
+- Processes each sheet in the Excel file independently
+- Implements multi-row header detection using a simple heuristic
+- Transforms headers into SQL-compatible column names
+- Outputs processed data as CSV files
 
-### Logging Strategy
-- Structured logging for all operations
-- Error tracking with stack traces
-- Processing metrics collection
-- Audit trail of all transformations
+### Schema Inferrer (schema_inferrer.py)
+Focuses on data type detection and normalization:
+- Attempts numeric conversion first (integers, then floats)
+- Handles date parsing with multiple format attempts
+- Falls back to string type when other conversions fail
+- Maintains consistent types within columns
+- Uses pandas' built-in type inference capabilities
+
+### Utilities (utils.py)
+Provides shared functionality:
+- Configures logging to both file and console
+- Normalizes column names to be SQL-compatible
+- Handles special character replacement in column names
+
+## Data Flow
+
+The pipeline follows a simple, linear flow:
+1. Excel files are detected in the input directory
+2. Files are copied to a processed directory
+3. Each sheet is processed independently
+4. Normalized data is saved as CSV files in the output directory
+
+## Error Handling
+
+- Sheet-level isolation (errors in one sheet don't affect others)
+- Logging of errors with timestamps
+- Continuation of processing despite individual failures
+
+## Current Limitations
+
+The current implementation has several constraints:
+- Processes files sequentially, not in parallel
+- Holds entire sheets in memory
+- No automated testing implementation
+- Basic data type inference
+
+## Usage
+
+The system is designed for straightforward usage:
+1. Place Excel files in the input directory
+2. Run pipeline.py
+3. Retrieve processed CSV files from the output directory
+4. Check logs for any processing issues
