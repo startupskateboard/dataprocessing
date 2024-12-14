@@ -1,6 +1,9 @@
 # Excel Data Pipeline
 
+The System Design Document can be found in DESIGN.md ***
+
 A robust data ingestion pipeline that processes Excel files for SQL database ingestion.
+
 
 ## Features
 
@@ -10,6 +13,12 @@ A robust data ingestion pipeline that processes Excel files for SQL database ing
 - Nested header support
 - SQL-ready output
 - Comprehensive logging
+
+## Dependencies
+
+- pandas >= 2.0.0
+- openpyxl >= 3.1.0
+- python-dateutil >= 2.8.2
 
 ## Installation
 
@@ -28,7 +37,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. Place your Excel files in the `data/input` directory
+1. Place your Excel files in the `data/input` directory. There is already a sample input file included.
 
 2. Run the pipeline:
 ```bash
@@ -40,6 +49,4 @@ The pipeline will:
 - Store processed files in `data/processed`
 - Generate output in `data/output`
 - Create logs in the `logs` directory
-```
 
-```
