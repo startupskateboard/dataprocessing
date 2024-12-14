@@ -50,3 +50,5 @@ The pipeline will:
 - Generate output in `data/output`
 - Create logs in the `logs` directory
 
+----
+Thank you for your consideration of my application. It's a privilege and I am grateful for the opportunity.
